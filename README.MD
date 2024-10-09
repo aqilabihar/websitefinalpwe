@@ -18,3 +18,7 @@ cd your-repository-name
 composer install
 ```
 
+### 4. Menyalakan server
+```bash
+php -S localhost:8000 -t public
+```

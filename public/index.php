@@ -5,15 +5,11 @@ use Core\Router;
 
 $router = new Router();
 
-$router->add('', ['controller' => 'App\Controllers\HomeController', 'action' => 'index']);
-$router->add('transaction', ['controller' => 'App\Controllers\TransactionController', 'action' => 'index']);
-$router->add('register', ['controller' => 'App\Controllers\RegisterController', 'action' => 'register']);
+$router->add('', ['controller' => 'App\Controllers\RegisterController', 'action' => 'index']);
+$router->add('login', ['controller' => 'App\Controllers\LoginController', 'action' => 'index']);
 
-$router->add('login', ['controller' => 'App\Controllers\LoginController', 'action' => 'index'], 'GET');
-$router->add('login', ['controller' => 'App\Controllers\LoginController', 'action' => 'login'], 'POST');
-$router->add('home', ['controller' => 'App\Controllers\HomeController', 'action' => 'index']);
-$router->add('logout', ['controller' => 'App\Controllers\LoginController', 'action' => 'logout']);
 
 
 $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$url = str_replace('/websitefinalpwe/public/', '', $url);
 $router->dispatch($url);
