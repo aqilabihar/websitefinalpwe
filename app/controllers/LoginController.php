@@ -23,41 +23,27 @@ class LoginController {
         include_once '../app/database/connect.php';
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['captcha'])) {
-                $username = $_POST['username'];
-                $password = md5($_POST['password']);
-                $captcha = $_POST['captcha'];
+            $username = $_POST['username'];
+            $password = md5($_POST['password']);
 
-                if ($captcha != $_SESSION['captcha']) {
-                    $_SESSION['error_message'] = "Captcha salah!";
-                    header('Location: /login');
-                    exit();
-                }
+            $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+            $result = mysqli_query($conn, $sql);
 
-                $query = "SELECT * FROM users WHERE username = '$username'";
-                $result = mysqli_query($conn, $query);
-
-                if (mysqli_num_rows($result) == 1) {
-                    $user = mysqli_fetch_assoc($result);
-                    if ($password == $user['password']) {
-                        $_SESSION['username'] = $username;
-                        header('Location: /home');
-                        exit();
-                    } else {
-                        $_SESSION['error_message'] = "Username atau password salah!";
-                        header('Location: /login');
-                        exit();
-                    }
-                } else {
-                    $_SESSION['error_message'] = "Username atau password salah!";
-                    header('Location: /login');
-                    exit();
-                }
+            if (mysqli_num_rows($result) == 1) {
+                $_SESSION['username'] = $username;
+                header('Location: /home');
+                exit();
             } else {
-                $_SESSION['error_message'] = "Semua input harus diisi!";
+                $_SESSION['error_message'] = 'Invalid username or password';
                 header('Location: /login');
                 exit();
             }
         }
+    }
+
+    public function logout() {
+        session_start();
+        session_destroy();
+        header('Location: /login');
     }
 }

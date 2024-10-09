@@ -12,4 +12,3 @@ if (!$conn) {
     // Jika gagal, tampilkan pesan error
     die("Koneksi gagal: " . mysqli_connect_error());
 }
-?>
