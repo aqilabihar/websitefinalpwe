@@ -6,30 +6,58 @@ use App\Models\Model;
 
 class LoginController {
     public function index() {
+        session_start();
+
+        $error_message = "";
+
+        if (isset($_SESSION['error_message'])) {
+            $error_message = $_SESSION['error_message'];
+            unset($_SESSION['error_message']);
+        }
+
         include_once '../app/views/login.php';
     }
 
-    public function register() {
+    public function login() {
         session_start();
         include_once '../app/database/connect.php';
 
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            if (isset($_POST['username']) && isset($_POST['password'])) {
+            if (isset($_POST['username']) && isset($_POST['password']) && isset($_POST['captcha'])) {
                 $username = $_POST['username'];
                 $password = md5($_POST['password']);
+                $captcha = $_POST['captcha'];
 
-                $query = "INSERT INTO users (username, password, nama_pengguna) VALUES ('$username', '$password', '$username')";
-                if (mysqli_query($conn, $query)) {
+                if ($captcha != $_SESSION['captcha']) {
+                    $_SESSION['error_message'] = "Captcha salah!";
                     header('Location: /login');
                     exit();
+                }
+
+                $query = "SELECT * FROM users WHERE username = '$username'";
+                $result = mysqli_query($conn, $query);
+
+                if (mysqli_num_rows($result) == 1) {
+                    $user = mysqli_fetch_assoc($result);
+                    if ($password == $user['password']) {
+                        $_SESSION['username'] = $username;
+                        header('Location: /home');
+                        exit();
+                    } else {
+                        $_SESSION['error_message'] = "Username atau password salah!";
+                        header('Location: /login');
+                        exit();
+                    }
                 } else {
-                    echo "Error: " . mysqli_error($conn);
+                    $_SESSION['error_message'] = "Username atau password salah!";
+                    header('Location: /login');
+                    exit();
                 }
             } else {
-                echo "All fields are required!";
+                $_SESSION['error_message'] = "Semua input harus diisi!";
+                header('Location: /login');
+                exit();
             }
         }
-
-        include_once '../app/views/register.php';
     }
 }
