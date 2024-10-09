@@ -1,34 +1,9 @@
-<?php
-session_start();
-include('connect.php'); // Koneksi ke database
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['username']) && isset($_POST['password'])) {
-        $username = $_POST['username'];
-        $password = md5($_POST['password']); // Enkripsi password dengan MD5
-
-        // Simpan ke database
-        $query = "INSERT INTO users (username, password, nama_pengguna) VALUES ('$username', '$password', '$username')";
-        if (mysqli_query($conn, $query)) {
-            // Jika pendaftaran berhasil, redirect ke login.php
-            header('Location: login.php');
-            exit();
-        } else {
-            echo "Error: " . mysqli_error($conn);
-        }
-    } else {
-        echo "Semua input harus diisi!";
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran</title>
+    <title>Pendaftaran Pengguna</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -76,11 +51,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h2>Pendaftaran Pengguna</h2>
-        <form method="POST" action="">
+        <form method="POST" action="/register">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
 
@@ -89,9 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             <input type="submit" value="Daftar">
         </form>
-        <!-- Bagian ini tetap ada: -->
-        <p>Sudah memiliki akun? <a href="login.php">Login di sini</a>.</p>
+
+        <p>Sudah memiliki akun? <a href="/login">Login di sini</a>.</p>
     </div>
 </body>
-
 </html>

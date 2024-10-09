@@ -1,33 +1,9 @@
-<?php
-session_start();
-include('connect.php'); // Koneksi ke database
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['username']) && isset($_POST['password'])) {
-        $username = $_POST['username'];
-        $password = md5($_POST['password']); // Enkripsi password dengan MD5
-
-        // Simpan ke database
-        $query = "INSERT INTO users (username, password, nama_pengguna) VALUES ('$username', '$password', '$username')";
-        if (mysqli_query($conn, $query)) {
-            // Jika pendaftaran berhasil, redirect ke login.php
-            header('Location: login.php');
-            exit();
-        } else {
-            echo "Error: " . mysqli_error($conn);
-        }
-    } else {
-        echo "Semua input harus diisi!";
-    }
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran</title>
+    <title>Login with Captcha</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -63,6 +39,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border: 1px solid #ccc;
             border-radius: 4px;
         }
+        #captchaSection {
+            display: none;
+        }
+        .error-message {
+            color: red;
+            margin-bottom: 15px;
+            text-align: center;
+        }
         p {
             text-align: center;
         }
@@ -70,18 +54,42 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 </head>
 <body>
     <div class="container">
-        <h2>Pendaftaran Pengguna</h2>
-        <form method="POST" action="">
+        <h2>Login</h2>
+
+        <?php if (!empty($error_message)): ?>
+            <div class="error-message">
+                <?php echo $error_message; ?>
+            </div>
+        <?php endif; ?>
+
+        <form method="POST" action="/login">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
 
             <label for="password">Password:</label>
-            <input type="password" id="password" name="password" required>
+            <input type="password" id="password" name="password" required onblur="showCaptcha()">
 
-            <input type="submit" value="Daftar">
+            <div id="captchaSection" style="display: none;">
+                <label for="captcha">Captcha:</label>
+                <input type="text" id="captcha" name="captcha" required>
+                <img src="/captcha" alt="CAPTCHA Image" id="captchaImage"><br>
+                <button type="button" onclick="refreshCaptcha()">Refresh Captcha</button>
+            </div>
+
+            <input type="submit" value="Login">
         </form>
-        <!-- Bagian ini tetap ada: -->
-        <p>Sudah memiliki akun? <a href="login.php">Login di sini</a>.</p>
+
+        <p>Belum memiliki akun? <a href="/register">Daftar di sini</a>.</p>
+
+        <script>
+            function showCaptcha() {
+                document.getElementById('captchaSection').style.display = 'block';
+            }
+
+            function refreshCaptcha() {
+                document.getElementById('captchaImage').src = '/captcha?' + Math.random();
+            }
+        </script>
     </div>
 </body>
 </html>
