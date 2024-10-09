@@ -13,14 +13,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh; /* Full-screen height */
+            height: 100vh; /* Tinggi penuh layar */
         }
         .container {
             background-color: white;
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            width: 400px; /* Lebar tetap */
         }
         h2 {
             text-align: center;
@@ -56,7 +56,6 @@
     <div class="container">
         <h2>Login</h2>
 
-        <!-- Display Error Message (if any) -->
         <?php if (!empty($error_message)): ?>
             <div class="error-message">
                 <?php echo $error_message; ?>
@@ -70,8 +69,7 @@
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" required onblur="showCaptcha()">
 
-            <!-- Captcha section -->
-            <div id="captchaSection">
+            <div id="captchaSection" style="display: none;">
                 <label for="captcha">Captcha:</label>
                 <input type="text" id="captcha" name="captcha" required>
                 <img src="/captcha" alt="CAPTCHA Image" id="captchaImage"><br>
@@ -85,10 +83,7 @@
 
         <script>
             function showCaptcha() {
-                var password = document.getElementById('password').value;
-                if (password) {
-                    document.getElementById('captchaSection').style.display = 'block';
-                }
+                document.getElementById('captchaSection').style.display = 'block';
             }
 
             function refreshCaptcha() {

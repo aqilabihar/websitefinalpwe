@@ -2,36 +2,33 @@
 
 namespace App\Controllers;
 
-use App\Models\Model;
-
 class RegisterController {
-    public function index() {
-        // Update this to include the register page instead of the login page
-        include_once '../app/views/register.php';
-    }
-
     public function register() {
-        session_start();
-        include_once '../app/database/connect.php';
-
+        // Check if the session is already started
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+        // Registration logic
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if (isset($_POST['username']) && isset($_POST['password'])) {
                 $username = $_POST['username'];
-                $password = md5($_POST['password']); // Consider using a more secure hashing function like password_hash()
+                $password = md5($_POST['password']); // Hash the password
 
+                $conn = \App\Database\Koneksi::getConnection(); // Database connection
                 $query = "INSERT INTO users (username, password, nama_pengguna) VALUES ('$username', '$password', '$username')";
+                
                 if (mysqli_query($conn, $query)) {
-                    // Redirect to login or another page after successful registration
-                    header('Location: /login');
+                    header('Location: /login');  // Redirect to login after successful registration
                     exit();
                 } else {
                     echo "Error: " . mysqli_error($conn);
                 }
             } else {
-                echo "All fields are required!";
+                echo "Semua input harus diisi!";
             }
         }
 
-        include_once '../app/views/register.php';
+        // Load the registration form view
+        include '../app/views/register.php';
     }
 }

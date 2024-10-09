@@ -4,14 +4,18 @@ namespace App\Controllers;
 
 class HomeController {
     public function index() {
-        session_start();
+        // Check if a session has already been started
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
 
         if (!isset($_SESSION['username'])) {
-            header('Location: /login');  // Redirect to login if not logged in
+            header('Location: /login');
             exit();
         }
 
-        include_once '../app/views/home.php';
+        include '../app/views/home.php';  // Load the home view
     }
 }
+
 

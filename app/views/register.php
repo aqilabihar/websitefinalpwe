@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pendaftaran</title>
+    <title>Pendaftaran Pengguna</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -51,11 +51,10 @@
         }
     </style>
 </head>
-
 <body>
     <div class="container">
         <h2>Pendaftaran Pengguna</h2>
-        <form method="POST" action="/register"> <!-- Change action to your registration route -->
+        <form method="POST" action="/register">
             <label for="username">Username:</label>
             <input type="text" id="username" name="username" required>
 
@@ -64,6 +63,7 @@
 
             <input type="submit" value="Daftar">
         </form>
+
         <p>Sudah memiliki akun? <a href="/login">Login di sini</a>.</p>
     </div>
 </body>
