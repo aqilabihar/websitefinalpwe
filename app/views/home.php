@@ -1,7 +1,4 @@
-<?php
-// Pastikan session dimulai
-session_start();
-?>
+
 
 <!DOCTYPE html>
 <html lang="en">
