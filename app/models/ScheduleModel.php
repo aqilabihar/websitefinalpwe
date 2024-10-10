@@ -1,29 +1,31 @@
 <?php
+
+namespace App\Models;
+
 class ScheduleModel {
     private $db;
 
     public function __construct($db) {
-        $this->db = $db;
+        $this->db = $db;  // Store the mysqli connection object
     }
 
-    // Fungsi untuk mengambil jadwal dari database
     public function getSchedules() {
-        $query = "SELECT id_peminjaman, tanggal_usulan, nama_kegiatan, waktu_mulai, waktu_selesai FROM loan_schedules";
-        $result = mysqli_query($this->db, $query);
+        $query = "SELECT id_peminjaman, tanggal_usulan, nama_kegiatan, waktu_mulai, waktu_selesai FROM peminjaman_advanced";
+        $result = mysqli_query($this->db, $query);  // Use the $db (mysqli object)
 
         $schedules = [];
 
         if ($result) {
             while ($row = mysqli_fetch_assoc($result)) {
                 $schedules[] = [
-                    'id' => $row['id_peminjaman'], // ID Peminjaman
-                    'title' => $row['nama_kegiatan'], // Nama Kegiatan
-                    'start' => $row['tanggal_usulan'] . 'T' . $row['waktu_mulai'], // Tanggal Usulan dan Waktu Mulai
-                    'end' => $row['tanggal_usulan'] . 'T' . $row['waktu_selesai'] // Tanggal Usulan dan Waktu Selesai
+                    'id' => $row['id_peminjaman'],
+                    'title' => $row['nama_kegiatan'],
+                    'start' => $row['tanggal_usulan'] . 'T' . $row['waktu_mulai'],
+                    'end' => $row['tanggal_usulan'] . 'T' . $row['waktu_selesai']
                 ];
             }
         }
+
         return $schedules;
     }
 }
-?>

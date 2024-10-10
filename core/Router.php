@@ -2,9 +2,10 @@
 
 namespace Core;
 
+use App\Models\ScheduleModel;  // Add this line to import ScheduleModel
+
 class Router {
     private $routes = [];
-
 
     public function add($route, $params = [], $method = 'GET') {
         $this->routes[$method][$route] = $params;
@@ -12,7 +13,6 @@ class Router {
 
     public function dispatch($url) {
         $method = $_SERVER['REQUEST_METHOD'];
-
         $url = ltrim($url, '/');
 
         if (isset($this->routes[$method][$url])) {
@@ -21,7 +21,18 @@ class Router {
             $action = $params['action'];
 
             if (class_exists($controller)) {
-                $controllerObject = new $controller();
+                if ($controller === 'App\Controllers\ScheduleController') {
+                    require_once '../app/database/Koneksi.php';
+
+                    // Instantiate ScheduleModel from the fully qualified namespace
+                    $db = \App\Database\Koneksi::getConnection();
+                    $model = new ScheduleModel($db);  // Ensure correct instantiation
+
+                    $controllerObject = new $controller($model);
+                } else {
+                    $controllerObject = new $controller();
+                }
+
                 if (method_exists($controllerObject, $action)) {
                     $controllerObject->$action();
                 } else {
@@ -35,5 +46,3 @@ class Router {
         }
     }
 }
-
-

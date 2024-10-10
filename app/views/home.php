@@ -1,4 +1,11 @@
+<<<<<<< Updated upstream
 
+=======
+<?php
+// Start session at the very top to ensure it's initialized before any output
+session_start();
+?>
+>>>>>>> Stashed changes
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +14,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FullCalendar with Book Loan Schedule</title>
-    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.css" rel="stylesheet" />
+    <!-- FullCalendar CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         /* Global Styles */
@@ -67,11 +76,6 @@
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
-        .calendar-container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
         .borrower-list {
             max-height: 300px;
             overflow-y: auto;
@@ -87,14 +91,6 @@
             background-color: #e9ecef;
             margin-bottom: 10px;
             border-radius: 4px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .borrower-card .actions {
-            display: flex;
-            gap: 5px;
         }
 
         /* Button Styling */
@@ -134,11 +130,11 @@
             <h1>
                 Welcome, 
                 <?php
-                // Cek apakah 'username' ada di session
+                // Check if 'username' exists in session
                 if (isset($_SESSION['username'])) {
-                    echo $_SESSION['username'];
+                    echo htmlspecialchars($_SESSION['username']);
                 } else {
-                    echo 'Guest'; // Tampilkan 'Guest' jika 'username' belum diatur
+                    echo 'Guest'; // Display 'Guest' if 'username' isn't set
                 }
                 ?>!
             </h1>
@@ -160,7 +156,6 @@
                     </div>
                     <div class="modal-body">
                         <div id="borrowerList" class="borrower-list"></div>
-                        <button class="btn btn-primary mt-3" id="addLoanButton">Pinjam pada Tanggal Ini</button>
                     </div>
                 </div>
             </div>
@@ -173,76 +168,75 @@
         </div>
     </div>
 
-    <!-- Modal Form for Book Loan Schedule -->
-    <div class="modal fade" id="scheduleModal" tabindex="-1" aria-labelledby="scheduleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="scheduleModalLabel">Tambah / Edit Jadwal Peminjaman Buku</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="scheduleForm">
-                        <input type="hidden" id="id" name="id" value="">
-                        <div class="mb-3">
-                            <label for="bookTitle" class="form-label">Judul Buku</label>
-                            <input type="text" class="form-control" id="bookTitle" name="bookTitle" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="borrowerName" class="form-label">Nama Peminjam</label>
-                            <input type="text" class="form-control" id="borrowerName" name="borrowerName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="startDate" class="form-label">Tanggal Mulai Peminjaman</label>
-                            <input type="date" class="form-control" id="startDate" name="startDate" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="endDate" class="form-label">Tanggal Akhir Peminjaman</label>
-                            <input type="date" class="form-control" id="endDate" name="endDate" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- FullCalendar, jQuery, and Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.7/index.global.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            // Initialize FullCalendar
             var calendarEl = document.getElementById('calendar');
             var calendar = new FullCalendar.Calendar(calendarEl, {
                 initialView: 'dayGridMonth',
-                events: [],
+                events: [], // Placeholder, to be replaced with AJAX-loaded events
                 dateClick: function (info) {
-                    $('#borrowerListModal').modal('show');
                     $('#selectedDate').text(info.dateStr);
+                    showBorrowerList(info.dateStr);
                 }
             });
             calendar.render();
 
-            // ID Check Example
-            var idCheckResult = document.getElementById('idCheckResult');
-            var checkId = function () {
-                var id = '12345'; // Example ID to check
-                if (id === '12345') {
-                    idCheckResult.textContent = 'ID Valid: ' + id;
-                } else {
-                    idCheckResult.textContent = 'ID Tidak Valid';
-                }
-            };
-            checkId();
+            // Load events from controller via AJAX
+            loadSchedules();
 
-            // Form submission for book loan schedule
-            $('#scheduleForm').on('submit', function (e) {
-                e.preventDefault();
-                var formData = $(this).serialize();
-                alert('Form submitted with data: ' + formData);
-                $('#scheduleModal').modal('hide');
-            });
+            async function loadSchedules() {
+                try {
+                    const response = await $.ajax({
+                        url: '/websitefinalpwe/public/index.php?action=getSchedules',  // Ensure the URL is correct
+                        method: 'GET',
+                        dataType: 'json'
+                    });
+
+                    console.log(response);  // Check response in the browser console
+
+                    if (Array.isArray(response)) {
+                        // Add the fetched events to the calendar
+                        response.forEach(function (event) {
+                            calendar.addEvent({
+                                id: event.id,
+                                title: event.title,
+                                start: event.start,  // YYYY-MM-DD
+                                end: event.end      // YYYY-MM-DD
+                            });
+                        });
+                    } else {
+                        console.error("Response is not an array", response);
+                    }
+                } catch (error) {
+                    console.error("Error loading schedules:", error);
+                }
+            }
+
+            // Show borrowers based on the selected date
+            function showBorrowerList(date) {
+                const borrowers = calendar.getEvents().filter(event => event.startStr.split('T')[0] === date);
+                $('#borrowerList').empty();
+
+                if (borrowers.length === 0) {
+                    $('#borrowerList').append('<p>No activities found for this date.</p>');
+                } else {
+                    borrowers.forEach(function (borrower) {
+                        const card = $('<div class="borrower-card"></div>').append(
+                            `<span>${borrower.title}</span>`  // Only display the title of the event
+                        );
+                        $('#borrowerList').append(card);
+                    });
+                }
+
+                // Show the modal for borrower list
+                $('#borrowerListModal').modal('show');
+            }
         });
     </script>
 </body>
