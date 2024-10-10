@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+
 class LoginController {
     public function index() {
         // Check if the session is already started
