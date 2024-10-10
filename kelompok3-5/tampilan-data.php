@@ -101,7 +101,7 @@ while ($row = $result3->fetch_assoc()) {
 
             <script>
                 // Convert table to PDF and send to server
-                $('#savePdfToServerBtn').click(function() {
+                $('#email').click(function() {
                     const {
                         jsPDF
                     } = window.jspdf;
