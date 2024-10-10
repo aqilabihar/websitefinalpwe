@@ -10,8 +10,7 @@ class Koneksi {
             $host = "localhost";
             $user = "root";
             $pass = "";         
-            $db   = "login_db";  
-
+            $db   = "website_peminjaman";
 
             self::$conn = mysqli_connect($host, $user, $pass, $db);
 

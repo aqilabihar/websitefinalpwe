@@ -13,6 +13,10 @@ $router->add('register', ['controller' => 'App\Controllers\RegisterController', 
 $router->add('register', ['controller' => 'App\Controllers\RegisterController', 'action' => 'register'], 'POST'); // Route to handle form submission
 $router->add('captcha', ['controller' => 'App\Controllers\CaptchaController', 'action' => 'generate']);
 $router->add('logout', ['controller' => 'App\Controllers\LoginController', 'action' => 'logout']);
+$router->add('peminjaman', ['controller' => 'App\Controllers\PeminjamanController', 'action' => 'index']);
+$router->add('peminjaman/save', ['controller' => 'App\Controllers\PeminjamanController', 'action' => 'save'], 'POST');
+$router->add('peminjaman/delete/{id}', ['controller' => 'App\Controllers\PeminjamanController', 'action' => 'delete']);
+
 
 
 $url = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
