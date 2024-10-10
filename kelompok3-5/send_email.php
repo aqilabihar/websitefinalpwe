@@ -1,4 +1,5 @@
 <?php
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -27,8 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Pengaturan pengirim dan penerima email
         $mail->setFrom('miraenk7@gmail.com', ''); // Nama pengirim
-        $mail->addAddress('tegarkalla836@gmail.com', 'Bagas'); // Email penerima
-        $mail->addCC('emikabarus13@gmail.com', 'Budi'); 
+        $mail->addAddress('aqilabihar123@gmail.com', 'Bagas'); // Email penerima
+        $mail->addCC('emikabarus13@gmail.com', 'Budi');
 
         // Cek apakah format adalah XLSX atau PDF
         if ($format == 'xlsx') {
@@ -51,4 +52,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo "Email gagal dikirim. Error: {$mail->ErrorInfo}";
     }
 }
-?>

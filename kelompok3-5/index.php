@@ -113,6 +113,8 @@
     </head>
 
     <body>
+        <a href="tampilan-data.php"><button>tampilan data</button></a>
+
         <div class="container-fluid mt-5">
             <h2 class="text-center mb-4">Form Usulan Kegiatan</h2>
 
