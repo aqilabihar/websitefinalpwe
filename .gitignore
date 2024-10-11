@@ -1,3 +1,14 @@
+<<<<<<< HEAD
 /vendor/
 app/database/Koneksi.php
 app/database/Koneksi.php
+=======
+<<<<<<< Updated upstream
+/vendor/
+=======
+/vendor/
+app/database/Koneksi.php
+app/database/Koneksi.php
+app/database/Koneksi.php
+>>>>>>> Stashed changes
+>>>>>>> MVC-Integration

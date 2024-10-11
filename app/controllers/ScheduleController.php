@@ -1,7 +1,11 @@
 <?php
+<<<<<<< HEAD
 
 namespace App\Controllers;
 
+=======
+<<<<<<< Updated upstream
+>>>>>>> MVC-Integration
 class ScheduleController {
     private $scheduleModel;
 
@@ -11,6 +15,7 @@ class ScheduleController {
 
     // Action to fetch schedules
     public function getSchedules() {
+<<<<<<< HEAD
         try {
             // Fetch schedules from the model
             $schedules = $this->scheduleModel->getSchedules();
@@ -31,5 +36,29 @@ class ScheduleController {
             header('Content-Type: application/json', true, 500);
             echo json_encode(['error' => 'Failed to retrieve schedules.']);
         }
+=======
+        $schedules = $this->scheduleModel->getSchedules();
+        echo json_encode($schedules); // Kirim data dalam format JSON
+=======
+
+namespace App\Controllers;
+
+use App\Models\ScheduleModel;
+use App\Database\Koneksi;
+
+class ScheduleController {
+    public function getSchedules() {
+        // Allow CORS requests
+        header("Access-Control-Allow-Origin: *");
+        header('Content-Type: application/json');
+
+        $dbConnection = Koneksi::getConnection();  // Ambil koneksi ke database
+        $scheduleModel = new ScheduleModel($dbConnection);
+        $schedules = $scheduleModel->getSchedules();  // Ambil jadwal dari database
+
+        echo json_encode($schedules);
+        exit();
+>>>>>>> Stashed changes
+>>>>>>> MVC-Integration
     }
 }

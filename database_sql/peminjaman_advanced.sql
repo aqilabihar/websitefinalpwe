@@ -33,20 +33,35 @@ CREATE TABLE `peminjaman_advanced` (
   `nama_kegiatan` varchar(255) NOT NULL,
   `nama_peminjam` varchar(255) NOT NULL,
   `surat_peminjaman` varchar(255) DEFAULT NULL,
+<<<<<<< HEAD
   `waktu_mulai` time NOT NULL,
   `waktu_selesai` time NOT NULL
+=======
+  `waktu_mulai` DATE NOT NULL,
+  `waktu_selesai` DATE NOT NULL
+>>>>>>> MVC-Integration
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `peminjaman_advanced`
 --
 
+<<<<<<< HEAD
 INSERT INTO `peminjaman_advanced` (`id_peminjaman`, `tanggal_usulan`, `nama_kegiatan`, `nama_peminjam`, `surat_peminjaman`, `waktu_mulai`, `waktu_selesai`) VALUES
 (1, '2024-10-15', 'Seminar Teknologi', 'Andi Setiawan', 'surat_peminjaman_001.pdf', '09:00:00', '11:00:00'),
 (2, '2024-10-16', 'Workshop Desain Grafis', 'Budi Santoso', NULL, '13:00:00', '15:00:00'),
 (3, '2024-10-17', 'Pelatihan Kepemimpinan', 'Citra Dewi', 'surat_peminjaman_002.pdf', '10:00:00', '12:00:00'),
 (4, '2024-10-18', 'Acara Musik Kampus', 'Dewi Sari', NULL, '14:00:00', '17:00:00'),
 (5, '2024-10-19', 'Diskusi Publik', 'Eka Putra', 'surat_peminjaman_003.pdf', '08:00:00', '10:00:00');
+=======
+INSERT INTO `peminjaman_advanced` (`id_peminjaman`, `tanggal_usulan`, `nama_kegiatan`, `nama_peminjam`, `surat_peminjaman`, `waktu_mulai`, `waktu_selesai`)
+VALUES
+(1, '2024-10-01', 'Seminar Teknologi', 'Andi Wijaya', 'surat_seminar_001.pdf', '2024-10-10', '2024-10-12'),
+(2, '2024-09-20', 'Pelatihan Soft Skill', 'Budi Santoso', 'surat_pelatihan_002.pdf', '2024-10-15', '2024-10-16'),
+(3, '2024-09-25', 'Workshop Digital Marketing', 'Citra Dewi', 'surat_workshop_003.pdf', '2024-11-01', '2024-11-02'),
+(4, '2024-08-30', 'Rapat Koordinasi', 'Dewi Kurniawan', NULL, '2024-09-05', '2024-09-05'),
+(5, '2024-07-15', 'Pameran Seni', 'Eko Pratama', 'surat_pameran_004.pdf', '2024-10-20', '2024-10-22');
+>>>>>>> MVC-Integration
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
