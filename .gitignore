@@ -1,1 +1,8 @@
+<<<<<<< Updated upstream
 /vendor/
+=======
+/vendor/
+app/database/Koneksi.php
+app/database/Koneksi.php
+app/database/Koneksi.php
+>>>>>>> Stashed changes
