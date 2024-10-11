@@ -1,11 +1,16 @@
 <?php
 
 require_once '../vendor/autoload.php';
+
 use Core\Router;
 
 $router = new Router();
 
+<<<<<<< Updated upstream
 // Add routes here
+=======
+$router->add('', ['controller' => 'App\Controllers\RegisterController', 'action' => 'register']);
+>>>>>>> Stashed changes
 $router->add('home', ['controller' => 'App\Controllers\HomeController', 'action' => 'index']);
 $router->add('login', ['controller' => 'App\Controllers\LoginController', 'action' => 'index'], 'GET');
 $router->add('login', ['controller' => 'App\Controllers\LoginController', 'action' => 'login'], 'POST');
