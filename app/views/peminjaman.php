@@ -13,6 +13,14 @@
     <div class="container-fluid mt-5">
         <h2 class="text-center mb-4">Form Usulan Kegiatan</h2>
 
+        <!-- Add button to upload PDF in the top-left corner -->
+        <div class="text-left">
+            <form action="" method="POST" enctype="multipart/form-data">
+                <input type="file" name="pdfFile" accept=".pdf">
+                <button type="submit" class="btn btn-success">Upload PDF</button>
+            </form>
+        </div>
+
         <form id="kegiatanForm" method="POST" enctype="multipart/form-data" action="/peminjaman/save">
             <input type="hidden" name="id_peminjaman" id="id_peminjaman">
             <input type="hidden" name="file_lama" id="file_lama">
@@ -51,7 +59,7 @@
             <button type="submit" class="btn btn-primary">Kirim Usulan</button>
         </form>
 
-        <!-- Display Peminjaman Data -->
+        <!-- Daftar data usulan -->
         <h4 class="mt-5">Data Usulan Kegiatan:</h4>
         <table class="table mt-3">
             <thead>
@@ -95,3 +103,33 @@
     </script>
 </body>
 </html>
+
+<?php
+// PHP code to handle PDF upload
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_FILES['pdfFile'])) {
+        $targetDir = "../public/uploads/";  // Adjust the path to the uploads folder
+        $targetFile = $targetDir . basename($_FILES["pdfFile"]["name"]);
+        $uploadOk = 1;
+        $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+
+        // Check if the file is a PDF
+        if ($fileType != "pdf") {
+            echo "Only PDF files are allowed.";
+            $uploadOk = 0;
+        }
+
+        // Check if everything is okay before uploading
+        if ($uploadOk == 1) {
+            // Move the uploaded file to the target directory
+            if (move_uploaded_file($_FILES["pdfFile"]["tmp_name"], $targetFile)) {
+                echo "The PDF file has been uploaded successfully.";
+            } else {
+                echo "There was an error uploading the file.";
+            }
+        }
+    } else {
+        echo "No file was uploaded.";
+    }
+}
+?>
